@@ -1,5 +1,7 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const fs = require('fs');
 const srcRoot = path.resolve(__dirname, 'src');
 const devPath = path.resolve(__dirname, 'dev');
@@ -43,6 +45,9 @@ const htmlArray = getHtmlArray(entryMap);
 
 module.exports = {
     mode: 'development',
+    devServer: {
+        contentBase: devPath,
+    },
     entry: entryMap,
     output: {
         path: devPath,
@@ -52,11 +57,20 @@ module.exports = {
         rules: [
             { test: /\.(js|jsx)$/, use: [{loader: 'babel-loader'}], include: srcRoot},
             { test: /\.css$/ , use:['style-loader',{'loader':'css-loader',options:{minimize: true}}], include: srcRoot},
-            { test: /\.scss$/ , use:['style-loader','css-loader','sass-loader'], include: srcRoot},
+            { test: /\.scss$/ , use:['style-loader','css-loader','sass-loader', {
+                loader: 'sass-resources-loader',
+                options: {
+                    resources: srcRoot + '/component/rem_function.scss'
+                }
+            }], include: srcRoot},
             { test: /\.(png|jpg|jpeg)$/, use: 'url-loader?limit=8192' , include: srcRoot}
         ]
     },
     plugins: [
-
+        new webpack.NamedModulesPlugin(),
+        new MiniCssExtractPlugin({
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        })
     ].concat(htmlArray)
 }
