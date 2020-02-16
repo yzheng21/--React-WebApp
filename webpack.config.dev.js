@@ -47,6 +47,7 @@ module.exports = {
     mode: 'development',
     devServer: {
         contentBase: devPath,
+        hot: true
     },
     entry: entryMap,
     output: {
@@ -68,6 +69,7 @@ module.exports = {
     },
     plugins: [
         new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
