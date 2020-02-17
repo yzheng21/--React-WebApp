@@ -61,7 +61,7 @@ module.exports = {
             { test: /\.scss$/ , use:['style-loader','css-loader','sass-loader', {
                 loader: 'sass-resources-loader',
                 options: {
-                    resources: srcRoot + '/component/rem_function.scss'
+                    resources: srcRoot + '/component/common.scss'
                 }
             }], include: srcRoot},
             { test: /\.(png|jpg|jpeg)$/, use: 'url-loader?limit=8192' , include: srcRoot}
