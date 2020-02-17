@@ -3,19 +3,19 @@
     .banner-img {
         position: relative;
         width: 100%;
-        height: px2rem(190px);
+        height: px2rem(178px);
         z-index: -1;
         overflow: hidden;
 
         &::after {
             content: '';
             width: 140%;
-            height: px2rem(190px);
+            height: px2rem(178px);
             position: absolute;
             left: -20%;
             top: 0;
             z-index: -1;
-            border-radius: 0 0 50% 50%;
+            // border-radius: 0 0 50% 50%;
             background-image: url('./img/meituan-header.png');
             background-size: 100% px2rem(178px);
             background-size: cover;
