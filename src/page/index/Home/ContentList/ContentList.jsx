@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ListItem from '../../../../component/ListItem/ListItem.jsx';
 import { getListData } from '../../actions/contentListAction';
+import ScrollView from '../../../../component/ScrollView/ScrollView.jsx';
 
 
 /**
@@ -13,31 +14,19 @@ import { getListData } from '../../actions/contentListAction';
 class ContentList extends React.Component {
     constructor(props) {
         super(props);
-        // 记录当前页码
-        this.page = 0;
         // 请求第一屏数据
-        this.fetchData(this.page);
-        // 标识页面是否可以滚动
-        this.state = {
-            isend: false
-        };
-
+        this.fetchData();
     }
 
     onLoadPage(){
-        this.page++;
-        // 最多滚动3页3次
-        if (this.page > 3) {
-            this.setState({
-                isend: true
-            });
-        } else {
-            this.fetchData(this.page);
+        // 最多滚动3页
+        if (this.props.page <= 3) {
+            this.fetchData();
         }
     }
 
-    fetchData(page){
-        this.props.dispatch(getListData(page));
+    fetchData(){
+        this.props.dispatch(getListData({}));
     }
 
     renderItems(){
@@ -55,7 +44,11 @@ class ContentList extends React.Component {
                     <span>附近商家</span>
                     <span className="title-line"></span>
                 </h4>
-                {this.renderItems()}
+                <ScrollView 
+                    loadCallback={this.onLoadPage.bind(this)} 
+                    isend={this.props.isend}>
+                    {this.renderItems()}
+                </ScrollView>
             </div>
         );
     }
@@ -63,6 +56,8 @@ class ContentList extends React.Component {
 
 export default connect(
     state =>({
-        list: state.contentListReducer.list
+        page: state.contentListReducer.page,
+        list: state.contentListReducer.list,
+        isend: state.contentListReducer.isend
     })
 )(ContentList);

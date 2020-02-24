@@ -1,18 +1,35 @@
 import { LIST_DATA } from '../actions/actionTypes';
 
 const initState = {
-    list: []
+    list: [],
+    filterData: null,
+    page: 0,
+    isend: false
 };
 
 const getListData = (state, action) =>{
-
-    if (action.currentPage === 0) {
-        return { ...state, list: action.obj.data.poilist};
+    let _listData = [];
+    let _filterData = action.filterData || state.filterData;
+    let _page = action.toFirstPage ? 0 : state.page;
+    let _isend = false;
+    if (_page === 0) {
+        _listData = action.obj.data.poilist;
     } else {
-        let list = state.list;
-        return { ...state, list: list.concat(action.obj.data.poilist)}
+        _listData = state.list.concat(action.obj.data.poilist);
     }
 
+    _page = _page + 1;
+    if (_page > 3) {
+        _isend = true;
+    }
+
+    return { 
+        ...state,
+        list: _listData,
+        filterData: _filterData,
+        page: _page,
+        isend: _isend
+    };
 }
 
 const contentListReducer = (state = initState, action) => {
