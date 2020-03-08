@@ -8,7 +8,7 @@ import React from 'react';
  * @description 导航栏
  */
 class NavHeader extends React.Component {
-    goBack(){
+    goBack() {
         window.history.back();
         // jsinvoke({
         //     cmd: 'goBack',
